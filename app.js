@@ -34,14 +34,29 @@ app.get('/', (req, res) => {
 })
 
 app.get('/artist-search', (req, res) => {
-   const artist = req.query.search.toLowerCase()
+   const artist = req.query.search
     spotifyApi
   .searchArtists(artist)
   .then(data => {
     //console.log(req.query.search)
-    console.log('The received data from the API: ', data.body.artists.items);
+    //console.log('The received data from the API: ', data.body.artists.items);
     
     res.render('artist-search-results', {artistList: data.body.artists.items, search: artist});
   })
   .catch(err => console.log('The error while searching artists occurred: ', err));
 })
+
+app.get('/albums/:id', (req, res) => {
+  spotifyApi
+  .getArtistAlbums(req.params.id)
+  .then(function(data) {
+    console.log('Artist albums', data.body.items);
+    res.render('albums', {albums: data.body.items});
+  }, 
+  function(err) {
+    console.error(err);
+  });
+    
+    ;;
+  })
+  
